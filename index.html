@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connectify</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHqTgKsb4GfX5MwT+1A7P8mGQyS6M6NXgpql3l2fZJ4jCTMCheFDvfsb+t6e2QjlIkQH4B7g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header>
+        <h1><i class="fab fa-instagram"></i> CONNECTIFY</h1>
+
+        <div id="searchWrapper">
+            <form id="searchForm">
+                <input type="text" id="searchInput" placeholder="Search users">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+
+        <nav id="navButtons">
+            <button id="createIdBtn"><i class="fas fa-user-plus"></i> Create ID</button>
+            <button id="homeBtn"><i class="fas fa-home"></i> Home</button>
+            <button id="exploreBtn"><i class="fas fa-compass"></i> Explore</button>
+            <button id="notificationsBtn"><i class="fas fa-bell"></i> Notifications</button>
+            <button id="toggleModeBtn"><i class="fas fa-moon"></i> Toggle Mode</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="searchResults">
+            <h3>Search Results:</h3>
+            <ul id="userList"></ul>
+        </section>
+
+        <form id="postForm" enctype="multipart/form-data">
+            <textarea id="postCaption" placeholder="What's on your mind?"></textarea>
+            <input type="file" id="postImage" accept="image/*">
+            <button type="submit"><i class="fas fa-plus-circle"></i> Create Post</button>
+        </form>
+
+        <section id="feed">
+            <h3>Feed</h3>
+            <div id="postFeed"></div>
+        </section>
+    </main>
+
+    <div id="createIdModal" class="modal">
+        <div class="modal-content">
+            <span class="closeBtn">&times;</span>
+            <h2 class="modal-title">Create New ID</h2>
+            <form id="createIdForm">
+                <input type="text" id="newUserName" placeholder="Enter your name">
+                <button type="submit"><i class="fas fa-user-plus"></i> Create ID</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
