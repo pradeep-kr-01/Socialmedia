@@ -1,8 +1,25 @@
-// User Data
-let users = [
-    { id: 'user1', name: 'Pradeep Kr', avatarUrl: 'https://image.tensorartassets.com/cdn-cgi/image/w=2048/model_showcase/0/c8486c06-5ecf-67e5-489a-bb72da812848.jpeg' },
-    { id: 'user2', name: 'Mrinal Bhradwaj', avatarUrl: 'https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/bc31387a-5b1a-4e5b-ab64-73efd614c70d/width=450/12169-3417738061-_lora_ttg-03_1_%20ttg,%20simple%20background,%20basic%20background,%20,%20solo,%20full%20body,%20green%20background,%20smiling,%20%20%20_lora_alienx-10%20ben10_.jpeg' }
-];
+// Load user data from localStorage (simulating users.json file)
+function loadUserData() {
+    let storedUsers = localStorage.getItem('users');
+    if (storedUsers) {
+        return JSON.parse(storedUsers);
+    } else {
+        // Initial default users (as a fallback)
+        return [
+            { id: 'user1', name: 'Pradeep Kr', avatarUrl: 'https://randomuser.me/api/portraits/men/32.jpg' },
+            { id: 'user2', name: 'Mrinal Bhradwaj', avatarUrl: 'https://randomuser.me/api/portraits/women/44.jpg' }
+        ];
+    }
+}
+
+// Save user data to localStorage (simulating saving to JSON file)
+function saveUserData(users) {
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
+// Initialize user data
+let users = loadUserData();
+let currentUser = null;
 
 // Pre-existing posts
 const preExistingPosts = [
@@ -12,9 +29,7 @@ const preExistingPosts = [
         imageUrl: 'https://picsum.photos/id/1015/600/400',
         caption: 'Beautiful mountain landscape!',
         likes: 15,
-        comments: [
-            { userId: 'user2', text: 'Wow, amazing view!' }
-        ]
+        comments: [{ userId: 'user2', text: 'Wow, amazing view!' }]
     },
     {
         id: 2,
@@ -22,35 +37,105 @@ const preExistingPosts = [
         imageUrl: 'https://picsum.photos/id/1025/600/400',
         caption: 'My furry friend',
         likes: 20,
-        comments: [
-            { userId: 'user1', text: 'So cute!' }
-        ]
+        comments: [{ userId: 'user1', text: 'So cute!' }]
     }
 ];
-
-let posts =   [...preExistingPosts];
+let posts = [...preExistingPosts];
 
 // Elements
-const searchForm = document.getElementById('searchForm');
-const searchInput = document.getElementById('searchInput');
+const loginModal = document.getElementById('loginModal');
+const loginForm = document.getElementById('loginForm');
+const createAccountForm = document.getElementById('createAccountForm');
+const searchWrapper = document.getElementById('searchWrapper');
 const userList = document.getElementById('userList');
 const postForm = document.getElementById('postForm');
 const postFeed = document.getElementById('postFeed');
-const createIdBtn = document.getElementById('createIdBtn');
-const createIdModal = document.getElementById('createIdModal');
-const closeBtn = document.getElementsByClassName('closeBtn')[0];
-const createIdForm = document.getElementById('createIdForm');
-const newUserName = document.getElementById('newUserName');
+const profileName = document.getElementById('profileName');
+const profileAvatar = document.getElementById('profileAvatar');
+const profileDropdown = document.getElementById('profileDropdown');
+const profileDropdownBtn = document.getElementById('profileDropdownBtn');
 const toggleModeBtn = document.getElementById('toggleModeBtn');
 
-// Handle user search
-searchForm.addEventListener('submit', (e) => {
+// Hide everything except login on page load
+window.onload = () => {
+    loginModal.style.display = 'flex';
+    searchWrapper.style.display = 'none';
+    document.querySelector('main').style.display = 'none';
+    profileDropdown.style.display = 'none'; // Hide profile dropdown
+};
+
+// Handle login form submission
+loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const searchTerm = searchInput.value.toLowerCase();
-    const filteredUsers = users.filter(user => 
-        user.name.toLowerCase().includes(searchTerm) || 
-        user.id.toLowerCase().includes(searchTerm)
-    );
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    // Simple check for example (replace with actual authentication)
+    const foundUser = users.find(user => user.name === username);
+    if (foundUser) {
+        currentUser = foundUser;
+        loadUserProfile();
+        loginModal.style.display = 'none';
+        searchWrapper.style.display = 'block';
+        document.querySelector('main').style.display = 'block';
+        profileDropdown.style.display = 'block'; // Show profile dropdown
+    } else {
+        alert("Invalid credentials, try again!");
+    }
+});
+
+// Handle account creation
+createAccountForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newUserName = document.getElementById('newUser').value.trim();
+    const newUser = {
+        id: `user${users.length + 1}`,
+        name: newUserName,
+        avatarUrl: 'https://randomuser.me/api/portraits/lego/1.jpg'
+    };
+    users.push(newUser);
+    saveUserData(users); // Save the new user to localStorage
+    currentUser = newUser;
+    loadUserProfile();
+    loginModal.style.display = 'none';
+    searchWrapper.style.display = 'block';
+    document.querySelector('main').style.display = 'block';
+    profileDropdown.style.display = 'block'; // Show profile dropdown
+    alert(`Account created for ${newUser.name}`);
+});
+
+function loadUserProfile() {
+    profileName.textContent = currentUser.name;
+    profileAvatar.src = currentUser.avatarUrl;
+}
+
+// Switch between login and account creation forms
+document.getElementById('createAccountBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    loginForm.style.display = 'none';
+    createAccountForm.style.display = 'block';
+});
+
+document.getElementById('loginLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    loginForm.style.display = 'block';
+    createAccountForm.style.display = 'none';
+});
+
+// Sign out user and show login modal again
+document.getElementById('signoutBtn').addEventListener('click', () => {
+    alert("Signed out");
+    // Ensure the modal is centered when the login page comes back
+    loginModal.style.display = 'flex'; // Display the modal
+    document.querySelector('main').style.display = 'none'; // Hide main content
+    profileDropdown.style.display = 'none'; // Hide the profile dropdown
+});
+
+// Handle user search
+document.getElementById('searchForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const filteredUsers = users.filter(user => user.name.toLowerCase().includes(searchTerm));
     displayUsers(filteredUsers);
 });
 
@@ -74,7 +159,7 @@ postForm.addEventListener('submit', (e) => {
         reader.onload = function(event) {
             const newPost = {
                 id: Date.now(),
-                userId: 'user1',
+                userId: currentUser.id,
                 imageUrl: event.target.result,
                 caption: caption,
                 likes: 0,
@@ -104,18 +189,6 @@ function displayPosts() {
                 <button onclick="likePost(${post.id})">
                     <i class="fas fa-heart"></i> ${post.likes}
                 </button>
-                <button onclick="toggleComments(${post.id})">
-                    <i class="fas fa-comment"></i> ${post.comments.length}
-                </button>
-            </div>
-            <div class="comments" id="comments-${post.id}" style="display: none;">
-                ${post.comments.map(comment => `
-                    <p><strong>${users.find(u => u.id === comment.userId).name}</strong>: ${comment.text}</p>
-                `).join('')}
-                <form onsubmit="addComment(event, ${post.id})">
-                    <input type="text" placeholder="Add a comment" required>
-                    <button type="submit">Post</button>
-                </form>
             </div>
         `;
         postFeed.appendChild(postDiv);
@@ -131,51 +204,6 @@ function likePost(postId) {
     }
 }
 
-// Toggle comments visibility
-function toggleComments(postId) {
-    const commentsDiv = document.getElementById(`comments-${postId}`);
-    commentsDiv.style.display = commentsDiv.style.display === 'none' ? 'block' : 'none';
-}
-
-// Add a comment
-function addComment(event, postId) {
-    event.preventDefault();
-    const post = posts.find(p => p.id === postId);
-    const commentText = event.target.querySelector('input').value;
-    post.comments.push({ userId: 'user1', text: commentText });
-    displayPosts();
-}
-
-// Handle Create ID
-createIdBtn.addEventListener('click', () => {
-    createIdModal.style.display = 'block';
-});
-
-closeBtn.addEventListener('click', () => {
-    createIdModal.style.display = 'none';
-});
-
-window.addEventListener('click', (e) => {
-    if (e.target === createIdModal) {
-        createIdModal.style.display = 'none';
-    }
-});
-
-createIdForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const userName = newUserName.value.trim();
-    if (userName) {
-        const newUser = {
-            id: `user${users.length + 1}`,
-            name: userName,
-            avatarUrl: 'https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/bc31387a-5b1a-4e5b-ab64-73efd614c70d/width=450/12169-3417738061-_lora_ttg-03_1_%20ttg,%20simple%20background,%20basic%20background,%20,%20solo,%20full%20body,%20green%20background,%20smiling,%20%20%20_lora_alienx-10%20ben10_.jpeg'
-        };
-        users.push(newUser);
-        alert(`User ID created: ${newUser.id}`);
-        newUserName.value = '';
-        createIdModal.style.display = 'none';
-    }
-});
 
 // Toggle day/night mode
 function toggleDarkMode() {
