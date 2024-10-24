@@ -1,12 +1,12 @@
-/* Base styles (mobile-first approach) */
+/* Base styles */
 :root {
     --bg-color: #f1f1f1;
     --text-color: #333;
     --card-bg: white;
     --header-bg: linear-gradient(45deg, #f093fb, #f5576c);
-    --button-bg: white;
+    --button-bg: #fff;
     --button-color: #f5576c;
-    --input-bg: white;
+    --input-bg: #fff;
     --input-color: #333;
     --modal-bg: white;
 }
@@ -43,7 +43,6 @@ header {
     background: var(--header-bg);
     padding: 15px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     color: white;
@@ -55,21 +54,19 @@ header {
 
 h1 {
     font-size: 1.5rem;
-    margin-bottom: 10px;
 }
 
-/* Search bar styles */
 #searchWrapper {
-    width: 100%;
-    max-width: 500px;
-    margin-top: 10px;
+    flex-grow: 1;
+    max-width: 400px;
+    margin: 0 20px;
 }
 
 #searchForm {
     display: flex;
     align-items: center;
     background-color: var(--input-bg);
-    border-radius: 50px;
+    border-radius: 25px;
     padding: 5px 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -78,7 +75,7 @@ h1 {
     flex: 1;
     padding: 8px;
     border: none;
-    border-radius: 50px;
+    border-radius: 25px;
     outline: none;
     font-size: 14px;
     background-color: var(--input-bg);
@@ -93,38 +90,74 @@ h1 {
     cursor: pointer;
 }
 
-/* Nav buttons styles */
+/* Buttons in Navigation */
 #navButtons {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 15px;
+    align-items: center;
 }
 
 #navButtons button {
     background: var(--button-bg);
     color: var(--button-color);
-    margin: 5px;
-    padding: 8px 15px;
-    border-radius: 50px;
+    padding: 10px;
+    margin: 0 10px;
     border: none;
+    border-radius: 50px;
     cursor: pointer;
-    font-size: 14px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 18px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#navButtons button:hover {
+    background-color: #f5576c;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Profile Dropdown */
+#profileDropdown {
+    position: relative;
+}
+
+#profileDropdown .dropdown-toggle {
     display: flex;
     align-items: center;
-    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
 }
 
-#navButtons button i {
-    margin-right: 5px;
+#profileDropdown .dropdown-toggle img {
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
 }
 
-/* Main Content */
-main {
-    padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
+#profileDropdown .dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background-color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+#profileDropdown .dropdown-item {
+    color: var(--text-color);
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+#profileDropdown .dropdown-item:hover {
+    background-color: var(--button-bg);
+}
+
+#profileDropdown:hover .dropdown-menu {
+    display: block;
 }
 
 /* Post Form */
@@ -163,19 +196,12 @@ main {
     font-size: 14px;
     display: flex;
     align-items: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-#postForm button i {
-    margin-right: 5px;
-}
-
-/* Feed */
-.post {
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    padding: 15px;
+#postForm button:hover {
+    background-color: #42a5f5;
+    transform: scale(1.1);
 }
 
 .post img {
@@ -183,12 +209,6 @@ main {
     height: auto;
     border-radius: 8px;
     margin-bottom: 10px;
-}
-
-.postFooter {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
 }
 
 .postFooter button {
@@ -199,174 +219,70 @@ main {
     font-size: 14px;
 }
 
-/* Modal styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.postFooter button:hover {
+    color: #f5576c;
+    transform: scale(1.1);
 }
 
-.modal-content {
-    background-color: var(--modal-bg);
+/* Login Modal */
+#loginModal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+}
+
+#loginModal .modal-content {
+    background-color: white;
     padding: 20px;
     border-radius: 15px;
     width: 90%;
     max-width: 400px;
     text-align: center;
-    animation: zoomIn 0.3s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Add shadow */
+    animation: fadeIn 0.3s ease; /* Fade-in animation */
 }
 
-.closeBtn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #999;
-}
-
-.modal-title {
-    font-size: 20px;
-    margin-bottom: 15px;
-    color: var(--text-color);
-}
-
-#createIdForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#createIdForm input[type="text"] {
+/* Styling for input fields and button inside the modal */
+#loginModal input {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
+    padding: 12px;
+    margin: 10px 0;
     border: 1px solid #ddd;
     border-radius: 8px;
-    font-size: 14px;
-    background-color: var(--input-bg);
-    color: var(--input-color);
+    font-size: 16px;
 }
 
-#createIdForm button {
-    background: linear-gradient(45deg, #f093fb, #f5576c);
-    border: none;
+#loginModal button {
+    padding: 12px 20px;
+    background-color: #4caf50;
     color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
-#createIdForm button i {
-    margin-right: 5px;
+#loginModal button:hover {
+    background-color: #45a049; /* Darken the button on hover */
 }
 
-/* Animations */
-@keyframes zoomIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-/* Media Queries for larger screens */
-@media screen and (min-width: 768px) {
-    header {
-        flex-direction: row;
-        padding: 15px 30px;
+/* Animation for modal appearance */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8); /* Start slightly smaller */
     }
-
-    h1 {
-        font-size: 2rem;
-        margin-bottom: 0;
-    }
-
-    #searchWrapper {
-        margin-top: 0;
-    }
-
-    #navButtons {
-        margin-top: 0;
-    }
-
-    #navButtons button {
-        font-size: 16px;
-        padding: 10px 20px;
-    }
-
-    main {
-        padding: 30px;
-        max-width: 800px;
-    }
-
-    #postForm textarea {
-        font-size: 16px;
-    }
-
-    #postForm input[type="file"] {
-        font-size: 16px;
-    }
-
-    #postForm button {
-        font-size: 16px;
-        padding: 10px 20px;
-    }
-
-    .post {
-        padding: 20px;
-    }
-
-    .postFooter button {
-        font-size: 16px;
-    }
-
-    .modal-content {
-        padding: 30px;
-    }
-
-    .modal-title {
-        font-size: 24px;
-    }
-
-    #createIdForm input[type="text"] {
-        font-size: 16px;
-    }
-
-    #createIdForm button {
-        font-size: 16px;
-    }
-}
-
-@media screen and (min-width: 1024px) {
-    main {
-        max-width: 1000px;
-    }
-
-    #postForm {
-        display: flex;
-        align-items: center;
-    }
-
-    #postForm textarea {
-        flex: 1;
-        margin-right: 15px;
-        margin-bottom: 0;
-    }
-
-    #postForm input[type="file"] {
-        margin-bottom: 0;
-        margin-right: 15px;
+    to {
+        opacity: 1;
+        transform: scale(1); /* Full size */
     }
 }
