@@ -38,6 +38,74 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+/* For devices with width less than 768px (mobiles) */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #navButtons {
+        flex-direction: column;
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    #navButtons button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    #searchWrapper {
+        width: 100%;
+        margin: 0;
+    }
+
+    #postForm, #feed {
+        padding: 10px;
+    }
+
+    #postForm textarea {
+        font-size: 12px;
+    }
+}
+
+/* For devices with width between 768px and 1200px (tablets) */
+@media (min-width: 768px) and (max-width: 1200px) {
+    #searchWrapper {
+        max-width: 300px;
+    }
+
+    #navButtons button {
+        padding: 8px;
+    }
+
+    #postForm textarea {
+        font-size: 14px;
+    }
+
+    .post img {
+        max-width: 90%;
+    }
+}
+
+/* Larger screen styles (desktops) */
+@media (min-width: 1200px) {
+    #searchWrapper {
+        max-width: 400px;
+    }
+
+    #navButtons button {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .post img {
+        max-width: 600px;
+    }
+}
+
+
 /* Header */
 header {
     background: var(--header-bg);
@@ -223,6 +291,24 @@ h1 {
     color: #f5576c;
     transform: scale(1.1);
 }
+/* Post Images */
+.post img {
+    width: 100%;
+    max-width: 100%;
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Modal responsiveness */
+#loginModal .modal-content {
+    width: 95%; /* Responsive for small screens */
+    max-width: 400px; /* Cap width for larger screens */
+}
+
+/* Post form */
+#postForm textarea, #postForm input {
+    width: 100%; /* Ensure full width on all screens */
+}
+
 
 /* Login Modal */
 #loginModal {
