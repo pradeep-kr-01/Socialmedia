@@ -259,6 +259,48 @@ document.getElementById('searchForm').addEventListener('submit', (e) => {
     displayUsers(filteredUsers);
 });
 
+// Toggle sidebar visibility
+document.getElementById('friendsBtn').addEventListener('click', () => {
+    const friendsSidebar = document.getElementById('friendsSidebar');
+    friendsSidebar.classList.toggle('open'); // Toggle 'open' class to slide in/out
+    displayFriendsInSidebar(); // Populate sidebar with friends list
+});
+
+// Close sidebar when close button is clicked
+document.getElementById('closeSidebar').addEventListener('click', () => {
+    document.getElementById('friendsSidebar').classList.remove('open');
+});
+
+// Populate friends list in the sidebar
+function displayFriendsInSidebar() {
+    const friendsListContainer = document.getElementById('friendsListSidebar');
+    const acceptedFriends = followRequests
+        .filter(request => request.to === currentUser.id && request.status === 'accepted')
+        .map(request => users.find(user => user.id === request.from));
+
+    friendsListContainer.innerHTML = acceptedFriends.length ? '' : '<li>No friends yet.</li>';
+
+    acceptedFriends.forEach(friend => {
+        const li = document.createElement('li');
+        li.classList.add('friend-item');
+        li.innerHTML = `
+            <img src="${friend.avatarUrl}" alt="${friend.name}'s avatar" class="friend-avatar">
+            <span>${friend.name}</span>
+        `;
+        friendsListContainer.appendChild(li);
+    });
+}
+
+// Close the sidebar if clicking outside of it
+window.addEventListener('click', (e) => {
+    const friendsSidebar = document.getElementById('friendsSidebar');
+    const friendsBtn = document.getElementById('friendsBtn');
+    if (!friendsSidebar.contains(e.target) && e.target !== friendsBtn && friendsSidebar.classList.contains('open')) {
+        friendsSidebar.classList.remove('open');
+    }
+});
+
+
 
 // Add follow requests array to simulate backend storage
 let followRequests = [];
@@ -322,3 +364,41 @@ window.onload = () => {
     displayNotifications();
     // Other existing onload operations...
 }
+
+// Toggle friends dropdown and display accepted friends
+document.getElementById('friendsBtn').addEventListener('click', () => {
+    const friendsDropdown = document.getElementById('friendsDropdown');
+    friendsDropdown.style.display = friendsDropdown.style.display === 'none' ? 'block' : 'none';
+    displayFriends(); // Update friends list
+});
+
+// Function to display friends in dropdown menu
+function displayFriends() {
+    const friendsListContainer = document.getElementById('friendsList');
+    const acceptedFriends = followRequests
+        .filter(request => request.to === currentUser.id && request.status === 'accepted')
+        .map(request => users.find(user => user.id === request.from)); // Only accepted follow requests
+
+    friendsListContainer.innerHTML = acceptedFriends.length ? '' : '<li>No friends yet.</li>';
+
+    acceptedFriends.forEach(friend => {
+        const li = document.createElement('li');
+        li.classList.add('friend-item');
+        li.innerHTML = `
+            <img src="${friend.avatarUrl}" alt="${friend.name}'s avatar" class="friend-avatar">
+            <span>${friend.name}</span>
+        `;
+        friendsListContainer.appendChild(li);
+    });
+}
+
+// Close the dropdown if the user clicks outside of it
+window.addEventListener('click', (e) => {
+    const friendsDropdown = document.getElementById('friendsDropdown');
+    const friendsBtn = document.getElementById('friendsBtn');
+    if (!friendsBtn.contains(e.target) && !friendsDropdown.contains(e.target)) {
+        friendsDropdown.style.display = 'none';
+    }
+});
+
+
