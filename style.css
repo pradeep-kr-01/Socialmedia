@@ -209,6 +209,78 @@ h1 {
     color: white;
     transform: scale(1.1);
 }
+/* Sidebar styling */
+.sidebar {
+    position: fixed;
+    right: -300px; /* Start hidden off-screen */
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #ffffff;
+    box-shadow: -4px 0 10px rgba(73, 4, 234, 0.2);
+    transition: right 0.3s ease;
+    z-index: 200;
+    overflow-y: auto;
+    padding-top: 20px;
+}
+/* Set consistent color for all text in the sidebar */
+.sidebar {
+    color: #1e88e5; /* or specify a fixed color like #333 if needed */
+}
+
+/* Set specific color for friend names */
+#friendsListSidebar .friend-item span {
+    color: blue; /* Set a consistent blue color for friend names */
+    font-weight: 500; /* Optional: make the text a bit bolder */
+}
+
+/* Open the sidebar */
+.sidebar.open {
+    right: 0;
+}
+
+/* Sidebar header */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.sidebar-header h3 {
+    margin: 0;
+    text-align: center; /* Center-align the header text */
+    flex-grow: 1; /* Ensure the header occupies full width */
+    color: #2a2762;
+}
+
+#closeSidebar {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color:#f50c0c;
+}
+
+/* Styling for friend items in sidebar */
+#friendsListSidebar .friend-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid #b23388;
+    cursor: pointer;
+}
+
+#friendsListSidebar .friend-item:hover {
+    background-color: #bd37a4;
+}
+
+.friend-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
 
 /* Profile Dropdown */
 #profileDropdown {
