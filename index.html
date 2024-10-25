@@ -44,6 +44,7 @@
         </div>
 
         <nav id="navButtons">
+            <button id="friendsBtn"><i class="fas fa-user-friends"></i> Friends</button>
             <!-- Notifications Button with Dropdown List -->
             <button id="notificationsBtn"><i class="fas fa-bell"></i> Notifications</button>
             <ul id="notificationsList" style="display: none;"></ul>
@@ -69,6 +70,16 @@
             </div>
             <button id="toggleModeBtn"><i class="fas fa-moon"></i> Toggle Mode</button>
         </nav>
+
+        <!-- Sidebar for Friends List -->
+        <div id="friendsSidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h3>Your Friends</h3>
+                <button id="closeSidebar">&times;</button> <!-- Close button -->
+            </div>
+            <ul id="friendsListSidebar"></ul> <!-- List of friends will be populated here -->
+        </div>
+
     </header>
 
     <main>
