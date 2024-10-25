@@ -44,10 +44,20 @@
         </div>
 
         <nav id="navButtons">
-            <button id="homeBtn"><i class="fas fa-home"></i> Home</button>
-            <button id="exploreBtn"><i class="fas fa-compass"></i> Explore</button>
+            <!-- Notifications Button with Dropdown List -->
             <button id="notificationsBtn"><i class="fas fa-bell"></i> Notifications</button>
-            <button id="profileBtn"><i class="fas fa-user"></i> Profile</button>
+            <ul id="notificationsList" style="display: none;"></ul>
+
+            <!-- JS to toggle notification list display -->
+            <script>
+                const notificationsBtn = document.getElementById('notificationsBtn');
+                const notificationsList = document.getElementById('notificationsList');
+
+                notificationsBtn.addEventListener('click', () => {
+                    notificationsList.style.display = notificationsList.style.display === 'none' ? 'block' : 'none';
+                });
+            </script>
+            
             <div id="profileDropdown" class="dropdown">
                 <button class="dropdown-toggle" id="profileDropdownBtn">
                     <img id="profileAvatar" src="" alt="Profile">
