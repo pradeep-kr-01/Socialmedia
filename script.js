@@ -220,3 +220,105 @@ toggleModeBtn.addEventListener('click', toggleDarkMode);
 
 // Initial rendering
 displayPosts();
+
+// Updated displayUsers function to add "Follow" button
+function displayUsers(users) {
+    userList.innerHTML = ''; // Clear previous results
+    users.forEach(user => {
+        if (user.id !== currentUser.id) { // Avoid showing follow option for self
+            const li = document.createElement('li');
+            li.classList.add('user-item');
+            li.innerHTML = `
+                <span>${user.name}</span>
+                <button onclick="sendFollowRequest('${user.id}')">Follow</button>
+            `;
+            userList.appendChild(li);
+        }
+    });
+}
+
+// Update the sendFollowRequest function to check if a request already exists
+function sendFollowRequest(userId) {
+    const existingRequest = followRequests.find(
+        request => request.from === currentUser.id && request.to === userId && request.status === 'pending'
+    );
+
+    if (!existingRequest) {
+        followRequests.push({ from: currentUser.id, to: userId, status: 'pending' });
+        displayNotification(`Follow request sent to ${users.find(user => user.id === userId).name}.`);
+    } else {
+        displayNotification('Follow request already sent.');
+    }
+}
+
+// Call displayUsers after user search
+document.getElementById('searchForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const filteredUsers = users.filter(user => user.name.toLowerCase().includes(searchTerm));
+    displayUsers(filteredUsers);
+});
+
+
+// Add follow requests array to simulate backend storage
+let followRequests = [];
+
+// Function to send a follow request
+function sendFollowRequest(userId) {
+    if (currentUser && currentUser.id !== userId) {
+        followRequests.push({ from: currentUser.id, to: userId, status: 'pending' });
+        displayNotification(`${users.find(user => user.id === userId).name} received your follow request.`);
+    }
+}
+
+// Function to display follow requests in the notification section
+function displayNotifications() {
+    const notificationsBtn = document.getElementById('notificationsBtn');
+    notificationsBtn.addEventListener('click', () => {
+        const notifications = followRequests
+            .filter(request => request.to === currentUser.id && request.status === 'pending')
+            .map(request => {
+                const requester = users.find(user => user.id === request.from);
+                return `
+                    <li>
+                        ${requester.name} wants to follow you
+                        <button onclick="acceptFollowRequest('${request.from}')">Accept</button>
+                        <button onclick="denyFollowRequest('${request.from}')">Deny</button>
+                    </li>
+                `;
+            }).join('');
+        document.getElementById('notificationsList').innerHTML = notifications || "<li>No notifications</li>";
+    });
+}
+
+// Accept or deny a follow request
+function acceptFollowRequest(fromUserId) {
+    const request = followRequests.find(req => req.from === fromUserId && req.to === currentUser.id);
+    if (request) {
+        request.status = 'accepted';
+        displayNotification(`You are now following ${users.find(user => user.id === fromUserId).name}.`);
+    }
+}
+
+function denyFollowRequest(fromUserId) {
+    const request = followRequests.find(req => req.from === fromUserId && req.to === currentUser.id);
+    if (request) {
+        request.status = 'denied';
+        displayNotification(`${users.find(user => user.id === fromUserId).name}'s follow request was denied.`);
+    }
+}
+
+// Display general notifications
+function displayNotification(message) {
+    const notificationArea = document.createElement('div');
+    notificationArea.classList.add('notification');
+    notificationArea.innerText = message;
+    document.body.appendChild(notificationArea);
+    setTimeout(() => notificationArea.remove(), 3000);
+}
+
+// Call notification display on load
+window.onload = () => {
+    displayNotifications();
+    // Other existing onload operations...
+}
